@@ -19,7 +19,9 @@ fun loadI18N() {
         "home-menu.home-item.tp-success" to "&aSuccessfully teleported to home &e%s&r!",
         "sethome.usage" to "Usage: &c/sethome <name>",
         "sethome.already-exists" to "You already have a home with the name &c%s&r!",
-        "sethome.success" to "Successfully created home &a%s&r!"
+        "sethome.success" to "Successfully created home &a%s&r!",
+        "are-you-sure-menu.yes" to "&aYes",
+        "are-you-sure-menu.no" to "&cNo",
     ))
 }
 
