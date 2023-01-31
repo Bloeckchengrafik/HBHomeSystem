@@ -1,0 +1,6 @@
+name: Homes
+version: '${project.version}'
+main: de.horstblocks.homes.Homes
+api-version: 1.19
+authors: [ Bloeckchengrafik ]
+description: A Home System for Horstblocks
