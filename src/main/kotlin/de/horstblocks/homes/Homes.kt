@@ -1,16 +1,24 @@
 package de.horstblocks.homes
 
 import de.horstblocks.homes.commands.HomeCommand
+import de.horstblocks.homes.config.loadDatabaseConfigFile
 import de.horstblocks.homes.config.loadI18N
+import de.horstblocks.homes.db.DatabaseConnection
 import de.horstblocks.homes.menu.KMenuListener
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class Homes : JavaPlugin() {
+    lateinit var database: DatabaseConnection
+
     override fun onEnable() {
         instance = this
 
         loadI18N()
+        loadDatabaseConfigFile()
+        database = DatabaseConnection()
+        database.runScript("init.sql")
+        database.closeConnection()
 
         Bukkit.getPluginManager().registerEvents(KMenuListener(), this)
 
