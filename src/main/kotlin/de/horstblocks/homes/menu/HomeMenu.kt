@@ -1,11 +1,13 @@
 package de.horstblocks.homes.menu
 
+import de.horstblocks.homes.config.t
+import de.horstblocks.homes.utils.plus
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
 class HomeMenu(player: Player) : KMenu(
-    title = Component.text("Homes"),
+    title = t("home-menu.title"),
     rows = 3,
     player = player
 ) {
@@ -19,7 +21,7 @@ class HomeMenu(player: Player) : KMenu(
             )
         )).onClick { menu, _ ->
             menu.close()
-            menu.player.sendMessage(Component.text("You clicked on Home 1"))
+            menu.player.sendMessage(t("prefix") + Component.text("You clicked on Home 1"))
         }
     }
 }
