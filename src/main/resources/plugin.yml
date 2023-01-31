@@ -10,3 +10,7 @@ commands:
     description: Teleports you to your home
     usage: /home [name]
     aliases: [h]
+
+  sethome:
+    description: Sets a home
+    usage: /sethome <name>

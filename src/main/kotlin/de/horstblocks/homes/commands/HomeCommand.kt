@@ -10,7 +10,6 @@ import org.bukkit.entity.Player
 class HomeCommand : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         HomeMenu(sender as Player).open()
-
         return true
     }
 

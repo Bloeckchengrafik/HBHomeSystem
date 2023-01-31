@@ -9,7 +9,10 @@ lateinit var langConfig: ConfigFile
 fun loadI18N() {
     langConfig = ConfigFile("translations.yml", hashMapOf(
         "prefix" to "&6[&eHomes&6] &r",
-        "home-menu.title" to "&6Homes tx"
+        "home-menu.title" to "&6Homes",
+        "sethome.usage" to "Usage: &c/sethome <name>",
+        "sethome.already-exists" to "You already have a home with the name &c%s&r!",
+        "sethome.success" to "Successfully created home &a%s&r!"
     ))
 }
 

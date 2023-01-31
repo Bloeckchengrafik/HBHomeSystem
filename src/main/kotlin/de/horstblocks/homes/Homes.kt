@@ -1,6 +1,7 @@
 package de.horstblocks.homes
 
 import de.horstblocks.homes.commands.HomeCommand
+import de.horstblocks.homes.commands.SetHomeCommand
 import de.horstblocks.homes.config.loadDatabaseConfigFile
 import de.horstblocks.homes.config.loadI18N
 import de.horstblocks.homes.db.DatabaseConnection
@@ -17,7 +18,8 @@ class Homes : JavaPlugin() {
         loadI18N()
         loadDatabaseConfigFile()
         database = DatabaseConnection()
-        database.runScript("init.sql")
+        database.runScript("init.homes.sql")
+        database.runScript("init.playercache.sql")
         database.closeConnection()
 
         Bukkit.getPluginManager().registerEvents(KMenuListener(), this)
@@ -25,6 +27,11 @@ class Homes : JavaPlugin() {
         HomeCommand().let {
             getCommand("home")?.setExecutor(it)
             getCommand("home")?.tabCompleter = it
+        }
+
+        SetHomeCommand().let {
+            getCommand("sethome")?.setExecutor(it)
+            getCommand("sethome")?.tabCompleter = it
         }
     }
 
