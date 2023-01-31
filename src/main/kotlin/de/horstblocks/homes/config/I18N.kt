@@ -10,6 +10,10 @@ fun loadI18N() {
     langConfig = ConfigFile("translations.yml", hashMapOf(
         "prefix" to "&6[&eHomes&6] &r",
         "home-menu.title" to "&6Homes",
+        "home-menu.page" to "&7Page &e%s&r",
+        "home-menu.close" to "&7Close",
+        "home-menu.left" to "&7Left",
+        "home-menu.right" to "&7Right",
         "home-menu.home-item.location" to "&7Location: &e%s, %s, %s&7 in &e%s&r",
         "home-menu.home-item.teleport" to "&7Click to teleport to this home",
         "home-menu.home-item.tp-success" to "&aSuccessfully teleported to home &e%s&r!",

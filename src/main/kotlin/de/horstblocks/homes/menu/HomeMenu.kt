@@ -20,8 +20,47 @@ class HomeMenu(player: Player, page: Int = 1) : KMenu(
             item(i + (5 * 9), MARKER_ITEM)
         }
 
+        item(
+            4, KItem(
+                type = Material.PAPER,
+                name = t("home-menu.page", page),
+                lore = listOf()
+            )
+        )
+
+        item(8, KItem(
+            type = Material.BARRIER,
+            name = t("home-menu.close"),
+            lore = listOf()
+        )).onClick { _, _ ->
+            player.closeInventory()
+        }
+
+        if (page > 1) {
+            item(3 + (5 * 9), KItem(
+                type = Material.ARROW,
+                name = t("home-menu.left"),
+                lore = listOf()
+            )).onClick { _, _ ->
+                HomeMenu(player, page - 1).open()
+            }
+        }
+
+        if (homes.size > page * MAX_HOMES_PER_PAGE) {
+            item(5 + (5 * 9), KItem(
+                type = Material.ARROW,
+                name = t("home-menu.right"),
+                lore = listOf()
+            )).onClick { _, _ ->
+                HomeMenu(player, page + 1).open()
+            }
+        }
+
         var pos = 9
-        for (home in homes.subList((page - 1) * MAX_HOMES_PER_PAGE, homes.size.coerceAtMost(page * MAX_HOMES_PER_PAGE))) {
+        for (home in homes.subList(
+            (page - 1) * MAX_HOMES_PER_PAGE,
+            homes.size.coerceAtMost(page * MAX_HOMES_PER_PAGE)
+        )) {
             item(pos, HomeItem(home))
             pos++
         }
