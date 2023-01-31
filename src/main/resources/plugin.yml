@@ -4,3 +4,9 @@ main: de.horstblocks.homes.Homes
 api-version: 1.19
 authors: [ Bloeckchengrafik ]
 description: A Home System for Horstblocks
+
+commands:
+  home:
+    description: Teleports you to your home
+    usage: /home [name]
+    aliases: [h]
