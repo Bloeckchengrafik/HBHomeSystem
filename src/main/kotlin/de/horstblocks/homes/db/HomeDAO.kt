@@ -1,6 +1,7 @@
 package de.horstblocks.homes.db
 
 import de.horstblocks.homes.Homes
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.sql.PreparedStatement
@@ -103,6 +104,17 @@ class HomeDAO(
         }
     }
 
+    fun toLocation(): Location {
+        return Location(
+            Homes.instance.server.getWorld(world),
+            x.toDouble(),
+            y.toDouble(),
+            z.toDouble(),
+            yaw,
+            pitch
+        )
+    }
+
     companion object {
         fun hasHome(uuid: UUID, name: String): Boolean {
             Homes.instance.database.getConnection().use { connection ->
@@ -117,6 +129,21 @@ class HomeDAO(
             }
         }
 
+        private fun fromResultSet(resultSet: ResultSet): HomeDAO {
+            return HomeDAO(
+                resultSet.getInt("id"),
+                resultSet.getString("uuid"),
+                resultSet.getString("name"),
+                resultSet.getString("world"),
+                resultSet.getFloat("x"),
+                resultSet.getFloat("y"),
+                resultSet.getFloat("z"),
+                resultSet.getFloat("yaw"),
+                resultSet.getFloat("pitch"),
+                resultSet.getString("material"),
+            )
+        }
+
         fun getHome(uuid: UUID, name: String): HomeDAO? {
             Homes.instance.database.getConnection().use { connection ->
                 connection.prepareStatement("SELECT * FROM homes WHERE uuid = ? AND name = ?")
@@ -125,23 +152,28 @@ class HomeDAO(
                         statement.setString(2, name)
                         statement.executeQuery().use { resultSet ->
                             if (resultSet.next()) {
-                                return HomeDAO(
-                                    resultSet.getInt("id"),
-                                    resultSet.getString("uuid"),
-                                    resultSet.getString("name"),
-                                    resultSet.getString("world"),
-                                    resultSet.getFloat("x"),
-                                    resultSet.getFloat("y"),
-                                    resultSet.getFloat("z"),
-                                    resultSet.getFloat("yaw"),
-                                    resultSet.getFloat("pitch"),
-                                    resultSet.getString("material"),
-                                )
+                                return fromResultSet(resultSet)
                             }
                         }
                     }
             }
             return null
+        }
+
+        fun getHomes(uniqueId: UUID): List<HomeDAO> {
+            val homes = mutableListOf<HomeDAO>()
+            Homes.instance.database.getConnection().use { connection ->
+                connection.prepareStatement("SELECT * FROM homes WHERE uuid = ?")
+                    .use { statement ->
+                        statement.setString(1, uniqueId.toString())
+                        statement.executeQuery().use { resultSet ->
+                            while (resultSet.next()) {
+                                homes.add(fromResultSet(resultSet))
+                            }
+                        }
+                    }
+            }
+            return homes
         }
     }
 }

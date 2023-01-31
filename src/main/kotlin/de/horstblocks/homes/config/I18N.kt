@@ -10,6 +10,9 @@ fun loadI18N() {
     langConfig = ConfigFile("translations.yml", hashMapOf(
         "prefix" to "&6[&eHomes&6] &r",
         "home-menu.title" to "&6Homes",
+        "home-menu.home-item.location" to "&7Location: &e%s, %s, %s&7 in &e%s&r",
+        "home-menu.home-item.teleport" to "&7Click to teleport to this home",
+        "home-menu.home-item.tp-success" to "&aSuccessfully teleported to home &e%s&r!",
         "sethome.usage" to "Usage: &c/sethome <name>",
         "sethome.already-exists" to "You already have a home with the name &c%s&r!",
         "sethome.success" to "Successfully created home &a%s&r!"

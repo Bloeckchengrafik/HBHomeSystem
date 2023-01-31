@@ -40,7 +40,13 @@ open class KMenu(
         return inventory
     }
 
-    class KItem(
+    companion object {
+        val MARKER_ITEM = KItem(Material.BLACK_STAINED_GLASS_PANE, Component.text(" "), listOf()).editMeta {
+            it.displayName(Component.text(" "))
+        }
+    }
+
+    open class KItem(
         type: Material,
         name: Component?,
         lore: List<Component>?,
@@ -64,12 +70,14 @@ open class KMenu(
             clickHandler(menu, event)
         }
 
-        fun editItem(handler: (ItemStack) -> Unit) {
+        fun editItem(handler: (ItemStack) -> Unit): KItem {
             handler(itemStack)
+            return this
         }
 
-        fun editMeta(handler: (ItemMeta) -> Unit) {
+        fun editMeta(handler: (ItemMeta) -> Unit): KItem {
             itemStack.editMeta(handler)
+            return this
         }
     }
 }

@@ -4,6 +4,7 @@ import de.horstblocks.homes.config.t
 import de.horstblocks.homes.db.HomeDAO
 import de.horstblocks.homes.utils.definingMaterial
 import de.horstblocks.homes.utils.plus
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -17,7 +18,11 @@ class SetHomeCommand : CommandExecutor, TabCompleter {
             return true
         }
 
-        val homeName = args.joinToString(" ")
+        var homeName = args.joinToString(" ")
+
+        if (sender.hasPermission("homes.color")) {
+            homeName = ChatColor.translateAlternateColorCodes('&', homeName)
+        }
 
         if(HomeDAO.hasHome((sender as Player).uniqueId, homeName)) {
             sender.sendMessage(t("prefix") + t("sethome.already-exists", homeName))
