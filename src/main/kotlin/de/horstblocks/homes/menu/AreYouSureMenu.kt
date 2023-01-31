@@ -15,7 +15,7 @@ class AreYouSureMenu(
 ) {
 
         init {
-            item(11, KItem(
+            item(12, KItem(
                 Material.RED_STAINED_GLASS,
                 t("are-you-sure-menu.no"),
                 lore = listOf()
@@ -23,7 +23,7 @@ class AreYouSureMenu(
                 player.closeInventory()
             }
 
-            item(15, KItem(
+            item(14, KItem(
                 Material.GREEN_STAINED_GLASS,
                 t("are-you-sure-menu.yes"),
                 lore = listOf()

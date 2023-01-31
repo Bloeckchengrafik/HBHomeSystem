@@ -10,6 +10,8 @@ class KMenuListener : Listener {
         val inventory = event.inventory
         if (inventory.holder is KMenu) {
             val menu = inventory.holder as KMenu
+            if (event.clickedInventory != inventory) return
+
             event.isCancelled = true
             menu.click(event)
         }

@@ -29,6 +29,8 @@ open class KMenu(
     }
 
     fun click(event: InventoryClickEvent) {
+        if (event.clickedInventory != inventory) return
+
         items[event.slot]?.click(this, event)
     }
 
@@ -48,8 +50,8 @@ open class KMenu(
 
     open class KItem(
         type: Material,
-        name: Component?,
-        lore: List<Component>?,
+        name: Component? = Component.text(" "),
+        lore: List<Component>? = null,
         amount: Int = 1
     ) {
         val itemStack: ItemStack = ItemStack(type, amount)
