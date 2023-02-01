@@ -15,6 +15,8 @@ fun loadI18N() {
             "home-menu.close" to "&7Close",
             "home-menu.left" to "&7Left",
             "home-menu.right" to "&7Right",
+            "home-menu.new-home" to "&aNew home",
+            "home-menu.new-home-name" to "&7Enter a name",
             "home-menu.home-item.location" to "&7Location: &e%s, %s, %s&7 in &e%s&r",
             "home-menu.home-item.teleport" to "&7Click to teleport to this home",
             "home-menu.home-item.edit" to "&7Rightclick to edit this home",

@@ -1,9 +1,11 @@
 package de.horstblocks.homes.menu
 
+import de.horstblocks.homes.Homes
 import de.horstblocks.homes.config.t
+import de.horstblocks.homes.config.translateString
 import de.horstblocks.homes.db.HomeDAO
-import de.horstblocks.homes.utils.plus
-import net.kyori.adventure.text.Component
+import net.wesjd.anvilgui.AnvilGUI
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -27,6 +29,24 @@ class HomeMenu(player: Player, page: Int = 1) : KMenu(
                 lore = listOf()
             )
         )
+
+        item((5 * 9) + 4, KItem(
+            type = Material.NETHER_STAR,
+            name = t("home-menu.new-home"),
+            lore = listOf()
+        )).onClick { _, _ ->
+            player.closeInventory()
+
+            AnvilGUI.Builder()
+                .title(translateString("home-menu.new-home-name"))
+                .text(" ")
+                .plugin(Homes.instance)
+                .onComplete { completion ->
+                    Bukkit.getServer().dispatchCommand(player, "sethome ${completion.text}")
+                    return@onComplete listOf(AnvilGUI.ResponseAction.close())
+                }
+                .open(player)
+        }
 
         item(8, KItem(
             type = Material.BARRIER,
