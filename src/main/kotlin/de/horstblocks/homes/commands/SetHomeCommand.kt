@@ -2,6 +2,7 @@ package de.horstblocks.homes.commands
 
 import de.horstblocks.homes.config.t
 import de.horstblocks.homes.db.HomeDAO
+import de.horstblocks.homes.db.PlayerCacheDAO
 import de.horstblocks.homes.utils.definingMaterial
 import de.horstblocks.homes.utils.greatestPermission
 import de.horstblocks.homes.utils.plus
@@ -18,9 +19,32 @@ class SetHomeCommand : CommandExecutor, TabCompleter {
             return true
         }
 
-        val homeName = args.joinToString(" ")
+        var homeName = args.joinToString(" ")
 
-        val homes = HomeDAO.getHomes((sender as Player).uniqueId)
+        var userUUID = (sender as Player).uniqueId
+
+        if (homeName.contains(":")) {
+            if (!sender.hasPermission("homes.set.others")) {
+                sender.sendMessage(t("prefix") + t("no-permission"))
+                return true
+            }
+
+            val split = homeName.split(":")
+            val targetUsername = split[0]
+            homeName = mutableListOf(*split.toTypedArray()).drop(1).joinToString(":")
+
+            val targetPlayerCacheDAO = PlayerCacheDAO(name = targetUsername)
+            val targetUUID = targetPlayerCacheDAO.fillUUID()
+
+            if (targetUUID.isFailure) {
+                sender.sendMessage(t("prefix") + t("player-not-found", targetUsername))
+                return true
+            }
+
+            userUUID = targetUUID.getOrThrow()
+        }
+
+        val homes = HomeDAO.getHomes(userUUID)
 
         if(homes.stream().filter { it.name == homeName }.count() > 0) {
             sender.sendMessage(t("prefix") + t("sethome.already-exists", homeName))
@@ -28,14 +52,14 @@ class SetHomeCommand : CommandExecutor, TabCompleter {
         }
 
         val maxHomes = sender.greatestPermission("homes.max.%d")
-        if(homes.size >= maxHomes) {
+        if(homes.size >= maxHomes && sender.uniqueId != userUUID) {
             sender.sendMessage(t("prefix") + t("sethome.max-reached", maxHomes))
             return true
         }
 
         HomeDAO(
             name = homeName,
-            owner = sender.uniqueId.toString(),
+            owner = userUUID.toString(),
             x = sender.location.x.toFloat(),
             y = sender.location.y.toFloat(),
             z = sender.location.z.toFloat(),

@@ -8,13 +8,14 @@ import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import java.util.*
 
-class HomeMenu(player: Player, page: Int = 1) : KMenu(
+class HomeMenu(player: Player, referencingPlayer: UUID, page: Int = 1) : KMenu(
     title = t("home-menu.title"),
     rows = 6,
     player = player
 ) {
-    private val homes: List<HomeDAO> = HomeDAO.getHomes(player.uniqueId)
+    private val homes: List<HomeDAO> = HomeDAO.getHomes(referencingPlayer)
 
     init {
         for (i in 0..8) {
@@ -42,7 +43,14 @@ class HomeMenu(player: Player, page: Int = 1) : KMenu(
                 .text(" ")
                 .plugin(Homes.instance)
                 .onComplete { completion ->
-                    Bukkit.getServer().dispatchCommand(player, "sethome ${completion.text}")
+                    val offlinePlayer = Bukkit.getOfflinePlayer(referencingPlayer)
+                    val prefix = if (offlinePlayer.uniqueId == player.uniqueId) {
+                        ""
+                    } else {
+                        "${offlinePlayer.name}:"
+                    }
+
+                    Bukkit.getServer().dispatchCommand(player, "sethome $prefix${completion.text}")
                     return@onComplete listOf(AnvilGUI.ResponseAction.close())
                 }
                 .open(player)
@@ -62,7 +70,7 @@ class HomeMenu(player: Player, page: Int = 1) : KMenu(
                 name = t("home-menu.left"),
                 lore = listOf()
             )).onClick { _, _ ->
-                HomeMenu(player, page - 1).open()
+                HomeMenu(player, referencingPlayer, page - 1).open()
             }
         }
 
@@ -72,16 +80,18 @@ class HomeMenu(player: Player, page: Int = 1) : KMenu(
                 name = t("home-menu.right"),
                 lore = listOf()
             )).onClick { _, _ ->
-                HomeMenu(player, page + 1).open()
+                HomeMenu(player, referencingPlayer, page + 1).open()
             }
         }
+
+        val allowedToEdit = player.uniqueId == referencingPlayer || player.hasPermission("homes.edit.others")
 
         var pos = 9
         for (home in homes.subList(
             (page - 1) * MAX_HOMES_PER_PAGE,
             homes.size.coerceAtMost(page * MAX_HOMES_PER_PAGE)
         )) {
-            item(pos, HomeItem(home))
+            item(pos, HomeItem(home, allowedToEdit))
             pos++
         }
     }

@@ -38,7 +38,9 @@ fun loadI18N() {
             "home-edit-menu.replace-success" to "&aSuccessfully set new location for home &e%s&r!",
             "home-edit-menu.set-item" to "&eSet item by clicking with an item in your inventory on this item",
             "home-edit-menu.set-item-success" to "&aSuccessfully set new item for home &e%s&r!",
-            "home.doesnotexist" to "&7This home &cdoesn't&7 exist."
+            "home.doesnotexist" to "&7This home &cdoesn't&7 exist.",
+            "no-permission" to "&cYou don't have the permission to do this!",
+            "player-not-found" to "&cPlayer &e%s&r not found!",
         )
     )
 }

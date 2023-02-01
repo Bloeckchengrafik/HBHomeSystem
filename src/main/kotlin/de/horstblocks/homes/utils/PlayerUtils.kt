@@ -4,7 +4,7 @@ import org.bukkit.entity.Player
 
 private const val MAX_GREATNESS = 255
 
-public fun Player.greatestPermission(permissionToFmt: String): Int {
+fun Player.greatestPermission(permissionToFmt: String): Int {
     if (hasPermission(permissionToFmt.format(MAX_GREATNESS))) {
         return Int.MAX_VALUE
     }
