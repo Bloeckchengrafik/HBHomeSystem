@@ -6,17 +6,25 @@ authors: [ Bloeckchengrafik ]
 description: A Home System for Horstblocks
 
 permissions:
-    homes.color:
-        description: Allows you to use color codes in your homes
-        default: op
+  homes.color:
+    description: Allows you to use color codes in your homes
+    default: op
+  homes.home:
+    description: Allows you to teleport to your homes
+    default: true
+  homes.sethome:
+    description: Allows you to set a home
+    default: true
 
 commands:
   home:
     description: Teleports you to your home
     usage: /home [name]
-    aliases: [h]
+    aliases: [ h ]
+    permission: homes.home
 
   sethome:
     description: Sets a home
     usage: /sethome <name>
+    permission: homes.sethome
 

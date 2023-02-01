@@ -3,6 +3,7 @@ package de.horstblocks.homes.commands
 import de.horstblocks.homes.config.t
 import de.horstblocks.homes.db.HomeDAO
 import de.horstblocks.homes.utils.definingMaterial
+import de.horstblocks.homes.utils.greatestPermission
 import de.horstblocks.homes.utils.plus
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -19,8 +20,16 @@ class SetHomeCommand : CommandExecutor, TabCompleter {
 
         val homeName = args.joinToString(" ")
 
-        if(HomeDAO.hasHome((sender as Player).uniqueId, homeName)) {
+        val homes = HomeDAO.getHomes((sender as Player).uniqueId)
+
+        if(homes.stream().filter { it.name == homeName }.count() > 0) {
             sender.sendMessage(t("prefix") + t("sethome.already-exists", homeName))
+            return true
+        }
+
+        val maxHomes = sender.greatestPermission("homes.max.%d")
+        if(homes.size >= maxHomes) {
+            sender.sendMessage(t("prefix") + t("sethome.max-reached", maxHomes))
             return true
         }
 
