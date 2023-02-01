@@ -20,12 +20,15 @@ class HomeCommand : CommandExecutor, TabCompleter {
 
         val homeName = args.joinToString(" ")
 
-        if(!HomeDAO.hasHome((sender as Player).uniqueId, homeName)) {
+        if (!HomeDAO.hasHome((sender as Player).uniqueId, homeName)) {
             sender.sendMessage(t("prefix") + t("home.doesnotexist"))
             return true
         }
 
-        sender.teleport(HomeDAO.getHome(sender.uniqueId, homeName)!!.toLocation(), PlayerTeleportEvent.TeleportCause.COMMAND)
+        sender.teleport(
+            HomeDAO.getHome(sender.uniqueId, homeName)!!.toLocation(),
+            PlayerTeleportEvent.TeleportCause.COMMAND
+        )
         return true
     }
 
@@ -38,6 +41,15 @@ class HomeCommand : CommandExecutor, TabCompleter {
         if (args.isNullOrEmpty()) return null
 
         val homeNameSoFar = args.joinToString(" ")
+        val homeNameDepth = args.size - 1
+
+
         return HomeDAO.getHomes((sender as Player).uniqueId).map { it.name }.filter { it.startsWith(homeNameSoFar) }
+            .map {
+                val split = it.split(" ")
+                // Drop the first homeNameDepth elements (the ones that are already typed)
+                // and join the rest with spaces
+                split.drop(homeNameDepth).joinToString(" ")
+            }
     }
 }
